@@ -1,0 +1,19 @@
+{
+  "namespace": "com.ryonday.avro.sux",
+  "name": "ThisShouldWork",
+  "type": "record",
+  "fields": [
+    {
+      "name": "age",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "type": "string"
+    },
+    {
+      "name": "location",
+      "type": "string"
+    }
+  ]
+ }
