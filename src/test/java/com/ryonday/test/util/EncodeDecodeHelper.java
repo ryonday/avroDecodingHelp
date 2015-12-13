@@ -3,7 +3,11 @@ package com.ryonday.test.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;
+import com.google.common.collect.ImmutableList;
 import org.apache.avro.Schema;
+import org.apache.avro.file.DataFileStream;
+import org.apache.avro.file.DataFileWriter;
+import org.apache.avro.io.DatumReader;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
@@ -14,8 +18,12 @@ import org.apache.avro.specific.SpecificRecord;
 import org.slf4j.Logger;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.OutputStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
 
 import static com.google.common.base.Preconditions.checkNotNull;
 import static org.slf4j.LoggerFactory.getLogger;
@@ -88,4 +96,49 @@ public class EncodeDecodeHelper {
         return reader.read(null, decoder);
 
     }
+
+    public static void writeRecordsToFile(Schema s, String fileName, int amount, Supplier<SpecificRecord> supplier) throws Exception {
+        DataFileWriter<SpecificRecord> writer = new DataFileWriter<>(new SpecificDatumWriter<>(s));
+
+        writer.create(s, new File(fileName));
+
+        for( int i = 0 ; i < amount ; ++i ) {
+            SpecificRecord x = supplier.get();
+            logger.info("Writing record to file '{}': {}", fileName, x );
+            writer.append( x );
+        }
+
+        writer.close();
+    }
+
+    public static List<SpecificRecord> readRecordsFromFile(Schema expectedSchema, String fileName) throws Exception {
+        DataFileStream<SpecificRecord> dataFileStream;
+        DatumReader<SpecificRecord> datumReader = new SpecificDatumReader<>(expectedSchema);
+
+        ImmutableList.Builder<SpecificRecord> bld = ImmutableList.builder();
+
+            dataFileStream = new DataFileStream<>(new FileInputStream(fileName), datumReader);
+            Schema actualSchema = dataFileStream.getSchema();
+
+            int recordNo = 0;
+
+            SpecificRecord record;
+
+            while (dataFileStream.hasNext()) {
+                ++recordNo;
+                record = dataFileStream.next();
+                logger.debug("Received message {} from Avro datafile: {}", recordNo, record);
+                try {
+                    bld.add( record );
+                } catch (Exception e) {
+                    logger.warn(e.getMessage());
+                }
+            }
+
+            dataFileStream.close();
+
+        return bld.build();
+    }
+
+
 }
