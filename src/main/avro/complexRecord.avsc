@@ -1,0 +1,107 @@
+{
+  "namespace": "com.ryonday.avro.sux",
+  "name": "SampleComplexRecord",
+  "type": "record",
+  "fields": [
+    {
+      "name": "age",
+      "doc": "Some sort of chronological measurement. This field, since it does not accept 'null', is REQUIRED (see below).",
+      "type": "string"
+    },
+    {
+      "name": "gender",
+      "doc": "Let's try to fit people into little boxes. One day this decision will end up on CodingHorror or Daily WTF!",
+      "type": {
+        "name": "Genders",
+        "type": "enum",
+        "symbols": [
+          "M",
+          "F"
+        ]
+      }
+    },
+    {
+      "name": "location",
+      "type": "string"
+    },
+    {
+      "name": "job",
+      "doc": "You are what you do. this is an example of an embedded record.",
+      "type": {
+        "name": "Job",
+        "type": "record",
+        "doc": "Information that helps us categorize you.",
+        "fields": [
+          {
+            "name": "employer",
+            "doc": "The name of the employer. This field can have a null value, which means it is OPTIONAL. Note the 'avro.java.string construct'. This ugly hack is the Avro team's attempt to compensate for horrible decision making. Without this construct, generated Java domain object use a garbage 'UTF8' class instead of a real String. This makes Avro domain objects infuriatingly difficult to work with.",
+            "type": [
+              "null",
+              {
+                "type": "string",
+                "avro.java.string": "String"
+              }
+            ]
+          },
+          {
+            "name": "yearsWorked",
+            "doc": "How loyal have you been?",
+            "type": "int"
+          },
+          {
+            "name": "startDate",
+            "doc": "The date you started, as expressed as milliseconds since the UNIX epoch.",
+            "type": "long"
+          },
+          {
+            "name": "bytes",
+            "doc": "just some bytes because I couldn't think of how to extend the analogy to cover them.",
+            "type": "bytes"
+          },
+          {
+            "name": "salary",
+            "doc": "measures your worth as a human being. Also helps us decide what type of stuff to market to you",
+            "type": "float"
+          },
+          {
+            "name": "happy",
+            "doc": "are you happy working at your employer?",
+            "type": "boolean"
+          },
+          {
+            "name": "duties",
+            "doc": "A list of short descriptions of the types of things you do",
+            "type": {
+              "type": "array",
+              "items": "string"
+            }
+          },
+          {
+            "name": "emotions",
+            "doc": "Brainstorm the emotions you feel when you think about how you spend your day. Note that this array is OPTIONAL.",
+            "type": [
+              "null",
+              {
+                "type": "array",
+                "items": "string"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "relationship",
+      "doc": "A single instance of an externally-defined record",
+      "type": "Relationship"
+    },
+    {
+      "name": "activities",
+      "doc": "an example of importing an externally-parsed record and creating an array of them. This is very useful. See 'embedded1.avsc' for the definition.",
+      "type": {
+        "type": "array",
+        "items": "Recreation"
+      }
+    }
+  ]
+}
