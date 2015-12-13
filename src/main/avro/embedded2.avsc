@@ -1,0 +1,17 @@
+{
+  "namespace": "com.ryonday.avro.sux",
+  "name": "Relationship",
+  "type": "record",
+  "fields": [
+    {
+      "name": "name",
+      "doc": "The name of the person you're in a relationship with",
+      "type": "string"
+    },
+    {
+      "name": "duration",
+      "doc": "how long have you been in the relationship?",
+      "type": "int"
+    }
+  ]
+}
