@@ -73,9 +73,9 @@ public class ComplexRecordTest {
 
         SampleComplexRecord complexRecord = mkComplexRecord();
 
-        String asJson = EncodeDecodeHelper.encodeToJson(complexRecord);
-        byte[] asBytes = EncodeDecodeHelper.encodeToByteArray(complexRecord);
-        String asByteString = EncodeDecodeHelper.encodeToByteArrayString(complexRecord);
+        String asJson = EncodeDecodeHelper.encodeToJsonSpecific(complexRecord);
+        byte[] asBytes = EncodeDecodeHelper.encodeToByteArraySpecific(complexRecord);
+        String asByteString = new String(EncodeDecodeHelper.encodeToByteArraySpecific(complexRecord));
 
         logger.info("Some decoding:\n\t" +
                 "Original Record:    {}\n\t" +
@@ -86,8 +86,8 @@ public class ComplexRecordTest {
             asJson, asBytes, asByteString
         );
 
-        SampleComplexRecord decodedFromJson = EncodeDecodeHelper.decodeFromJson(asJson, SampleComplexRecord.getClassSchema());
-        SampleComplexRecord decodedFromBytes = EncodeDecodeHelper.decodeFromBytes(asBytes, SampleComplexRecord.getClassSchema());
+        SampleComplexRecord decodedFromJson = EncodeDecodeHelper.decodeFromJsonSpecific(asJson, SampleComplexRecord.getClassSchema());
+        SampleComplexRecord decodedFromBytes = EncodeDecodeHelper.decodeFromBytesSpecific(asBytes, SampleComplexRecord.getClassSchema());
 
         assertEquals(complexRecord, decodedFromJson);
         assertEquals(complexRecord, decodedFromBytes);

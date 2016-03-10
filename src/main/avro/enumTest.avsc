@@ -1,0 +1,15 @@
+{
+  "namespace": "com.ryonday.avro.sux",
+  "name": "EnumTest",
+  "type": "record",
+  "fields": [
+    {
+      "name": "game_state",
+      "type": "ChildGameState"
+    },
+    {
+      "name": "piggy_type",
+      "type": "PiggyType"
+    }
+  ]
+}

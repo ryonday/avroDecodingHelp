@@ -1,0 +1,13 @@
+{
+  "namespace": "com.ryonday.avro.sux",
+  "name": "PiggyType",
+  "doc": "An enumeration of the roles of a child's toes.",
+  "type": "enum",
+  "symbols": [
+   "The_Piggy_Who_Went_To_Market",
+    "The_Piggy_Who_Stayed_Home",
+    "The_Piggy_Who_Had_Roast_Beef",
+    "The_Piggy_Who_Had_No_Roast_Beef",
+    "The_Piggy_Who_Went_Wee_Wee_Wee_Wee_All_The_Way_Home"
+  ]
+}

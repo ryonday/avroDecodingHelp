@@ -7,7 +7,11 @@ import com.google.common.collect.ImmutableList;
 import org.apache.avro.Schema;
 import org.apache.avro.file.DataFileStream;
 import org.apache.avro.file.DataFileWriter;
+import org.apache.avro.generic.GenericDatumReader;
+import org.apache.avro.generic.GenericDatumWriter;
+import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.io.DatumReader;
+import org.apache.avro.io.DatumWriter;
 import org.apache.avro.io.Decoder;
 import org.apache.avro.io.DecoderFactory;
 import org.apache.avro.io.Encoder;
@@ -21,7 +25,6 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.OutputStream;
-import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -32,24 +35,28 @@ public class EncodeDecodeHelper {
 
     private static final Logger logger = getLogger(EncodeDecodeHelper.class);
 
-    public static String encodeToJson(SpecificRecord record) throws Exception {
-        return new String(encode(record, jsonEncoder(record.getSchema())), Charsets.UTF_8);
+    public static String encodeToJsonGeneric(GenericRecord record) throws Exception {
+        return new String(encode(record, jsonEncoder(record.getSchema()), new GenericDatumWriter<>(record.getSchema())), Charsets.UTF_8);
 
     }
 
-    public static byte[] encodeToByteArray(SpecificRecord record) throws Exception {
-        return encode(record, binaryEncoder);
+    public static byte[] encodeToByteArrayGeneric(GenericRecord record) throws Exception {
+        return encode(record, binaryEncoder, new GenericDatumWriter<>(record.getSchema()));
     }
 
-    public static String encodeToByteArrayString(SpecificRecord record) throws Exception {
-        return Arrays.toString(encodeToByteArray(record));
+    public static String encodeToJsonSpecific(GenericRecord record) throws Exception {
+        return new String(encode(record, jsonEncoder(record.getSchema()), new SpecificDatumWriter<>(record.getSchema())), Charsets.UTF_8);
+
     }
 
-    private static byte[] encode(SpecificRecord record, Function<OutputStream, Encoder> encoderFn) throws Exception {
+    public static byte[] encodeToByteArraySpecific(GenericRecord record) throws Exception {
+        return encode(record, binaryEncoder, new SpecificDatumWriter<>(record.getSchema()));
+    }
+
+    private static byte[] encode(GenericRecord record, Function<OutputStream, Encoder> encoderFn, DatumWriter writer) throws Exception {
         checkNotNull(record, "Cannot encode null record.");
         logger.info("Received Record: {}", record);
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        SpecificDatumWriter<SpecificRecord> writer = new SpecificDatumWriter<>(record.getSchema());
         Encoder encoder = encoderFn.apply(baos);
         writer.write(record, encoder);
         encoder.flush();
@@ -72,26 +79,41 @@ public class EncodeDecodeHelper {
 
     }
 
-    public static <T extends SpecificRecord> T decodeFromJson(String json, Schema schema) throws Exception {
+    public static <T extends SpecificRecord> T decodeFromJsonGeneric(String json, Schema schema) throws Exception {
         checkNotNull(json, "Cannot decode null JSON.");
         checkNotNull(schema, "Cannot decode using null schema.");
 
         Decoder decoder = DecoderFactory.get().jsonDecoder(schema, json);
 
-        return decode( decoder, schema);
+        return decode(decoder, schema, new GenericDatumReader<>(schema));
     }
 
-    public static <T extends SpecificRecord> T decodeFromBytes(byte[] bytes, Schema schema) throws Exception {
+    public static <T extends SpecificRecord> T decodeFromBytesGeneric(byte[] bytes, Schema schema) throws Exception {
         checkNotNull(bytes, "Cannot decode null bytes.");
 
         Decoder decoder = DecoderFactory.get().binaryDecoder(bytes, null);
 
-        return decode( decoder, schema);
+        return decode(decoder, schema, new GenericDatumReader<>(schema));
     }
 
-    private static <T extends SpecificRecord> T decode(Decoder decoder, Schema schema) throws Exception {
+    public static <T extends SpecificRecord> T decodeFromJsonSpecific(String json, Schema schema) throws Exception {
+        checkNotNull(json, "Cannot decode null JSON.");
+        checkNotNull(schema, "Cannot decode using null schema.");
 
-        SpecificDatumReader<T> reader = new SpecificDatumReader<>(schema);
+        Decoder decoder = DecoderFactory.get().jsonDecoder(schema, json);
+
+        return decode(decoder, schema, new SpecificDatumReader<>(schema));
+    }
+
+    public static <T extends SpecificRecord> T decodeFromBytesSpecific(byte[] bytes, Schema schema) throws Exception {
+        checkNotNull(bytes, "Cannot decode null bytes.");
+
+        Decoder decoder = DecoderFactory.get().binaryDecoder(bytes, null);
+
+        return decode(decoder, schema, new SpecificDatumReader<>(schema));
+    }
+
+    private static <T extends SpecificRecord> T decode(Decoder decoder, Schema schema, DatumReader<T> reader) throws Exception {
 
         return reader.read(null, decoder);
 
@@ -102,10 +124,10 @@ public class EncodeDecodeHelper {
 
         writer.create(s, new File(fileName));
 
-        for( int i = 0 ; i < amount ; ++i ) {
+        for (int i = 0; i < amount; ++i) {
             SpecificRecord x = supplier.get();
-            logger.info("Writing record to file '{}': {}", fileName, x );
-            writer.append( x );
+            logger.info("Writing record to file '{}': {}", fileName, x);
+            writer.append(x);
         }
 
         writer.close();
@@ -117,25 +139,25 @@ public class EncodeDecodeHelper {
 
         ImmutableList.Builder<SpecificRecord> bld = ImmutableList.builder();
 
-            dataFileStream = new DataFileStream<>(new FileInputStream(fileName), datumReader);
-            Schema actualSchema = dataFileStream.getSchema();
+        dataFileStream = new DataFileStream<>(new FileInputStream(fileName), datumReader);
+        Schema actualSchema = dataFileStream.getSchema();
 
-            int recordNo = 0;
+        int recordNo = 0;
 
-            SpecificRecord record;
+        SpecificRecord record;
 
-            while (dataFileStream.hasNext()) {
-                ++recordNo;
-                record = dataFileStream.next();
-                logger.debug("Received message {} from Avro datafile: {}", recordNo, record);
-                try {
-                    bld.add( record );
-                } catch (Exception e) {
-                    logger.warn(e.getMessage());
-                }
+        while (dataFileStream.hasNext()) {
+            ++recordNo;
+            record = dataFileStream.next();
+            logger.debug("Received message {} from Avro datafile: {}", recordNo, record);
+            try {
+                bld.add(record);
+            } catch (Exception e) {
+                logger.warn(e.getMessage());
             }
+        }
 
-            dataFileStream.close();
+        dataFileStream.close();
 
         return bld.build();
     }

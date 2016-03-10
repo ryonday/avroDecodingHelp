@@ -41,6 +41,7 @@ public class AvroDecodingHelp {
         logger.info("ThisShouldWorkSchema: {}", thisShouldworkSchema);
     }
 
+
     @Test(expected = ClassCastException.class)
     public void testEncodeGenericRecordUsingGenericEncoderAndDecodeToSepcificRecordUsingSpecificDecoderAndSameSchemaForReadAndWrite() throws Exception {
 
@@ -61,11 +62,11 @@ public class AvroDecodingHelp {
     public void testEncodeSpecificRecordUsingGenericEncoderAndDecodeToSpecifiRecordUsingSpecificDecoderAndSameSchemaForReadAndWrite() throws Exception {
 
         ThisShouldWork thisShouldWork = ThisShouldWork
-                                         .newBuilder()
-                                         .setAge("999")
-                                         .setGender("F")
-                                         .setLocation("work")
-                                         .build();
+            .newBuilder()
+            .setAge("999")
+            .setGender("F")
+            .setLocation("work")
+            .build();
 
         logger.debug("This is the SpecificRecord: {}", thisShouldWork);
         ThisShouldWork outRecord = encodeUsingGenericDecodeUsingSpecific(thisShouldWork, schema, schema);
@@ -78,16 +79,16 @@ public class AvroDecodingHelp {
     public void testEncodeSpecificRecordUsingSpecificEncoderAndDecodeUsingSpecificEncoderAndSameSchemaForReadAndWrite() throws Exception {
 
         ThisShouldWork thisShouldWork = ThisShouldWork
-                                         .newBuilder()
-                                         .setAge("999")
-                                         .setGender("F")
-                                         .setLocation("work")
-                                         .build();
+            .newBuilder()
+            .setAge("999")
+            .setGender("F")
+            .setLocation("work")
+            .build();
 
         logger.debug("This is the SpecificRecord: {}", thisShouldWork);
         ThisShouldWork outRecord = encodeUsingSpecificDecodeUsingSpecific(thisShouldWork,
-                                                                          ThisShouldWork.getClassSchema(),
-                                                                          ThisShouldWork.getClassSchema());
+            ThisShouldWork.getClassSchema(),
+            ThisShouldWork.getClassSchema());
 
         logger.debug("OutRecord: {}", outRecord);
 
@@ -104,7 +105,7 @@ public class AvroDecodingHelp {
 
         logger.debug("This is the GenericRecord: {}", thisShouldWork);
         ThisShouldWork outRecord = encodeUsingGenericDecodeUsingSpecific(thisShouldWork, schema,
-                                                                         ThisShouldWork.getClassSchema());
+            ThisShouldWork.getClassSchema());
 
         logger.debug("OutRecord: {}", outRecord);
 
@@ -114,15 +115,15 @@ public class AvroDecodingHelp {
     public void testEncodeSpecificRecordUsingGenericEncoderAndDecodeToSpecifiRecordUsingSpecificDecoderAndDifferentSchemaForReadAndWrite() throws Exception {
 
         ThisShouldWork thisShouldWork = ThisShouldWork
-                                         .newBuilder()
-                                         .setAge("999")
-                                         .setGender("F")
-                                         .setLocation("work")
-                                         .build();
+            .newBuilder()
+            .setAge("999")
+            .setGender("F")
+            .setLocation("work")
+            .build();
 
         logger.debug("This is the SpecificRecord: {}", thisShouldWork);
         ThisShouldWork outRecord = encodeUsingGenericDecodeUsingSpecific(thisShouldWork, schema,
-                                                                         ThisShouldWork.getClassSchema());
+            ThisShouldWork.getClassSchema());
 
         logger.debug("OutRecord: {}", outRecord);
 
@@ -132,16 +133,16 @@ public class AvroDecodingHelp {
     public void testEncodeSpecificRecordUsingSpecificEncoderAndDecodeUsingSpecificEncoderAndDifferentSchemaForReadAndWrite() throws Exception {
 
         ThisShouldWork thisShouldWork = ThisShouldWork
-                                         .newBuilder()
-                                         .setAge("999")
-                                         .setGender("F")
-                                         .setLocation("work")
-                                         .build();
+            .newBuilder()
+            .setAge("999")
+            .setGender("F")
+            .setLocation("work")
+            .build();
 
         logger.debug("This is the SpecificRecord: {}", thisShouldWork);
         ThisShouldWork outRecord = encodeUsingSpecificDecodeUsingSpecific(thisShouldWork,
-                                                                          schema,
-                                                                          ThisShouldWork.getClassSchema());
+            schema,
+            ThisShouldWork.getClassSchema());
 
         logger.debug("OutRecord: {}", outRecord);
 

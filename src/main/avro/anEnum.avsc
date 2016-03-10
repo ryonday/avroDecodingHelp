@@ -1,0 +1,15 @@
+{
+  "namespace": "com.ryonday.avro.sux",
+  "name": "ChildGameState",
+  "doc": "An enumeration of the states of the common child's rhyme.",
+  "type": "enum",
+  "symbols": [
+    "Eeny",
+    "Meeny",
+    "Miny",
+    "Moe",
+    "Tiger_Caught_By_Toe",
+    "Tiger_Has_Hollered",
+    "Child_Has_Released_Tiger"
+  ]
+}

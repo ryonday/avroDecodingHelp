@@ -21,11 +21,16 @@ avro {
 
 dependencies {
     compile("org.slf4j:log4j-over-slf4j:1.7.12")
-    compile("org.apache.avro:avro:1.7.7")
-    compile("org.apache.avro:avro-ipc:1.7.7")
-    compile("com.google.guava:guava:18.0")
+    compile("org.apache.avro:avro:1.8.0")
+    compile("org.apache.avro:avro-ipc:1.8.0")
+//    compile("org.apache.avro:avro:1.7.7")
+//    compile("org.apache.avro:avro-ipc:1.7.7")
+    compile("com.google.guava:guava:19.0")
     compile('ch.qos.logback:logback-classic:0.9.26')
     testCompile("junit:junit:4.11")
+    testCompile("org.assertj:assertj-core:3.2.0")
+
+
 }
 
 processResources {
