@@ -1,0 +1,11 @@
+{
+  "namespace": "com.ryonday.avro.test.deepcopy",
+  "name": "CinderellaStatus",
+  "doc": "The status of the tale's protagonist.",
+  "type": "enum",
+  "symbols": [
+    "Scullery_Maid",
+    "Ball_Goer",
+    "Married_Off"
+  ]
+}

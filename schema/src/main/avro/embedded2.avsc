@@ -1,5 +1,5 @@
 {
-  "namespace": "com.ryonday.avro.sux",
+  "namespace": "com.ryonday.avro.test",
   "name": "Relationship",
   "type": "record",
   "fields": [

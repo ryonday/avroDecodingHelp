@@ -1,2 +1,2 @@
 rootProject.name = 'avroDecodingHelp'
-
+include 'schema', 'common', '1.7.7', '1.8.0'

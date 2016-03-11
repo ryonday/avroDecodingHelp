@@ -1,22 +1,41 @@
-package com.ryonday.test;
+package com.ryonday.avro.test.v180;
 
-import com.ryonday.avro.sux.ChildGameState;
-import com.ryonday.avro.sux.EnumTest;
-import com.ryonday.avro.sux.PiggyType;
-import com.ryonday.test.util.EncodeDecodeHelper;
+import com.ryonday.avro.test.enums.ChildGameState;
+import com.ryonday.avro.test.enums.EnumTest;
+import com.ryonday.avro.test.enums.PiggyType;
+import com.ryonday.avro.test.util.EncodeDecodeHelper;
 import org.apache.avro.AvroTypeException;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.junit.Test;
 import org.slf4j.Logger;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class Avro180EnumFail {
+public class AvroEnumFailTest {
 
-    private static final Logger logger = getLogger(Avro180EnumFail.class);
+    private static final Logger logger = getLogger(AvroEnumFailTest.class);
+
+
+
+    @Test
+    public void testName() throws Exception {
+
+        Integer a=new Integer(0);
+        Long    b=new Long(1231243134525L);
+        List<Object> listError= Arrays.asList(a, b);
+        logger.info("{}", listError);
+        //error because Number&Comparable<?> is not Object
+        List<Object> listObj=Arrays.<Object>asList(a, b);
+        List<Number> listNum=Arrays.<Number>asList(a, b);
+        List<Comparable<?>> listCmp=Arrays.<Comparable<?>>asList(a, b);
+
+    }
 
     @Test
     public void genericDatumWriter_failsForSpecificRecord() throws Exception {

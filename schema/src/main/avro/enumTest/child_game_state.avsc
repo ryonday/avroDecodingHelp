@@ -1,5 +1,5 @@
 {
-  "namespace": "com.ryonday.avro.sux",
+  "namespace": "com.ryonday.avro.test.enums",
   "name": "ChildGameState",
   "doc": "An enumeration of the states of the common child's rhyme.",
   "type": "enum",

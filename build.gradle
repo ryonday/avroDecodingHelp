@@ -2,42 +2,71 @@ plugins {
     id "com.commercehub.gradle.plugin.avro" version "0.8.0"
 }
 
-group 'com.ryonday'
+
 version '1.0-SNAPSHOT'
 
-apply plugin: 'java'
-apply plugin: 'idea'
-apply plugin: "com.commercehub.gradle.plugin.avro"
+allprojects {
+    group = 'group com.ryonday.avro.test'
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+    apply plugin: 'idea'
+    apply plugin: 'java'
 
-repositories {
-    mavenCentral()
-}
+    sourceCompatibility = JavaVersion.VERSION_1_8
 
-avro {
-    stringType = "string"
-}
-
-dependencies {
-    compile("org.slf4j:log4j-over-slf4j:1.7.12")
-    compile("org.apache.avro:avro:1.8.0")
-    compile("org.apache.avro:avro-ipc:1.8.0")
-//    compile("org.apache.avro:avro:1.7.7")
-//    compile("org.apache.avro:avro-ipc:1.7.7")
-    compile("com.google.guava:guava:19.0")
-    compile('ch.qos.logback:logback-classic:0.9.26')
-    testCompile("junit:junit:4.11")
-    testCompile("org.assertj:assertj-core:3.2.0")
-
-
-}
-
-processResources {
-    doLast {
-        copy {
-            from 'src/main/avro/avrodecodinghelp.avsc'
-            into 'build/resources/main/'
-        }
+    repositories {
+        mavenCentral()
     }
 }
+
+project('common') {
+    proj ->
+        dependencies {
+            compile("org.apache.avro:avro:1.7.7}")
+            compile("org.apache.avro:avro-ipc:1.7.7")
+        }
+}
+
+project('schema') {
+    apply plugin: "com.commercehub.gradle.plugin.avro"
+
+    avro {
+        stringType = "string"
+    }
+
+    dependencies {
+        compile("org.apache.avro:avro:1.7.7}")
+        compile("org.apache.avro:avro-ipc:1.7.7")
+    }
+}
+
+configure(subprojects.findAll { it.name != 'schema' }) {
+    proj ->
+        dependencies {
+            compile("org.slf4j:log4j-over-slf4j:1.7.12")
+            compile("com.google.guava:guava:19.0")
+            compile('ch.qos.logback:logback-classic:0.9.26')
+            testCompile("junit:junit:4.11")
+            testCompile("org.assertj:assertj-core:3.2.0")
+        }
+}
+
+configure(subprojects.findAll { it.name != 'schema' && it.name != 'common' }) {
+    proj ->
+        dependencies {
+            compile project(':schema')
+            compile project(':common')
+            compile("org.apache.avro:avro:${proj.name}")
+            compile("org.apache.avro:avro-ipc:${proj.name}")
+        }
+}
+
+
+//
+//processResources {
+//    doLast {
+//        copy {
+//            from 'src/main/avro/avrodecodinghelp.avsc'
+//            into 'build/resources/main/'
+//        }
+//    }
+//}

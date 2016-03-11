@@ -1,5 +1,5 @@
 {
-  "namespace": "com.ryonday.avro.sux",
+  "namespace": "com.ryonday.avro.test.enums",
   "name": "PiggyType",
   "doc": "An enumeration of the roles of a child's toes.",
   "type": "enum",

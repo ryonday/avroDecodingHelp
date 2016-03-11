@@ -1,0 +1,10 @@
+{
+  "namespace": "com.ryonday.avro.test.deepcopy",
+  "name": "MouseStatus",
+  "doc": "The state of the mice within the tale.",
+  "type": "enum",
+  "symbols": [
+    "White_Horses",
+    "Plain_Old_Vermin"
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "namespace": "com.ryonday.avro.test.deepcopy",
+  "name": "PumpkinStatus",
+  "doc": "Keeps track of the current pumpkin state.",
+  "type": "enum",
+  "symbols": [
+   "Golden_Carriage",
+   "Plain_Old_Gourd"
+  ]
+}

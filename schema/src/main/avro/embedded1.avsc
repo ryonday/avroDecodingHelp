@@ -1,5 +1,5 @@
 {
-  "namespace": "com.ryonday.avro.sux",
+  "namespace": "com.ryonday.avro.test",
   "name": "Recreation",
   "doc": "This is an example of the Avro schema compiler being able to handle external records.",
   "type": "record",

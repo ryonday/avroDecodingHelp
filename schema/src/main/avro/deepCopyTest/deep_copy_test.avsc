@@ -1,0 +1,41 @@
+{
+  "namespace": "com.ryonday.avro.test.deepcopy",
+  "name": "DeepCopyTest",
+  "doc": "Information about telling the classic fairy tale to children.",
+  "type": "record",
+  "fields": [
+    {
+      "name": "cinderella_status",
+      "type": "CinderellaStatus"
+    },
+    {
+      "name": "mouse_status",
+      "type": "MouseStatus"
+    },
+    {
+      "name": "pumpkin_status",
+      "type": "PumpkinStatus"
+    },
+    {
+      "name": "told_to",
+      "doc": "The name of the child being told the story",
+      "type": "string"
+    },
+    {
+      "name": "told_by",
+      "doc": "The name of the person telling the story.",
+      "type": [
+        "null",
+        {
+          "type": "string",
+          "avro.java.string": "String"
+        }
+      ]
+    },
+    {
+      "name": "times_told",
+      "doc": "The number of times the child has been told this story",
+      "type": "int"
+    }
+  ]
+}

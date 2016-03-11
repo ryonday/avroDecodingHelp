@@ -1,6 +1,4 @@
-package com.ryonday.test;
-
-import com.ryonday.avro.sux.ThisShouldWork;
+import com.ryonday.avro.test.ThisShouldWork;
 import org.apache.avro.Schema;
 import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericDatumWriter;
@@ -33,7 +31,7 @@ public class AvroDecodingHelp {
     @BeforeClass
     public static void setUp() throws Exception {
 
-        File schemaFile = new File("src/main/avro/avrodecodinghelp.avsc");
+        File schemaFile = new File("../schema/src/main/avro/avrodecodinghelp.avsc");
         logger.info("Schema File: {}", schemaFile.getAbsolutePath());
         schema = new Schema.Parser().parse(schemaFile);
         logger.info("Schema: {}", schema);

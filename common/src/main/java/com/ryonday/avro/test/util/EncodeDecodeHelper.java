@@ -1,5 +1,4 @@
-package com.ryonday.test.util;
-
+package com.ryonday.avro.test.util;
 
 import com.google.common.base.Charsets;
 import com.google.common.base.Function;

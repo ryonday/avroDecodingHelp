@@ -1,12 +1,10 @@
-package com.ryonday.test;
-
 import com.google.common.collect.ImmutableList;
-import com.ryonday.avro.sux.Genders;
-import com.ryonday.avro.sux.Job;
-import com.ryonday.avro.sux.Recreation;
-import com.ryonday.avro.sux.Relationship;
-import com.ryonday.avro.sux.SampleComplexRecord;
-import com.ryonday.test.util.EncodeDecodeHelper;
+import com.ryonday.avro.test.Genders;
+import com.ryonday.avro.test.Job;
+import com.ryonday.avro.test.Recreation;
+import com.ryonday.avro.test.Relationship;
+import com.ryonday.avro.test.SampleComplexRecord;
+import com.ryonday.avro.test.util.EncodeDecodeHelper;
 import org.apache.avro.specific.SpecificRecord;
 import org.junit.Test;
 import org.slf4j.Logger;
@@ -15,14 +13,12 @@ import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Random;
 
-import static com.ryonday.test.util.EncodeDecodeHelper.readRecordsFromFile;
-import static com.ryonday.test.util.EncodeDecodeHelper.writeRecordsToFile;
 import static org.junit.Assert.assertEquals;
 import static org.slf4j.LoggerFactory.getLogger;
 
-public class ComplexRecordTest {
+public class AvroComplexRecordTest {
 
-    private static final Logger logger = getLogger(ComplexRecordTest.class);
+    private static final Logger logger = getLogger(AvroComplexRecordTest.class);
 
     private static SampleComplexRecord mkComplexRecord() {
         Random r = new Random();
@@ -97,8 +93,8 @@ public class ComplexRecordTest {
     @Test
     public void testItCanWriteRecordsToAFileAndWriteThemBack() throws Exception {
 
-        writeRecordsToFile(SampleComplexRecord.getClassSchema(), "Test.avro", 100, ComplexRecordTest::mkComplexRecord);
-        List<SpecificRecord> records = readRecordsFromFile( SampleComplexRecord.getClassSchema(), "Test.avro");
+        EncodeDecodeHelper.writeRecordsToFile(SampleComplexRecord.getClassSchema(), "Test.avro", 100, AvroComplexRecordTest::mkComplexRecord);
+        List<SpecificRecord> records = EncodeDecodeHelper.readRecordsFromFile( SampleComplexRecord.getClassSchema(), "Test.avro");
 
         logger.info("Read {} records from file.", records.size());
     }
